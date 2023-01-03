@@ -16,7 +16,7 @@ $app->add(new BasePathMiddleware($app));
 $app->addErrorMiddleware(true, true,true);
 
 $app->get('/', function (Request $request, Response $response) {
-    $response->getBody()->write('It works!');
+    $response->getBody()->write('This is test version of REST API called customers.');
     return $response;
 });
 
@@ -47,9 +47,9 @@ $app->get('/all', function (Request $request, Response $response) {
 
 $app->post('/add', function (Request $request, Response $response, array $args) {
     $data = $request->getParsedBody();
-    $name = $data["name"];
-    $email = $data["email"];
-    $phone = $data["phone"];
+    $name = getValue($data["name"]);
+    $email = getValue($data["email"]);
+    $phone = getValue($data["phone"]);
 
     $sql = "INSERT INTO customers (name, email, phone) VALUES (:name, :email, :phone)";
 
@@ -83,11 +83,11 @@ $app->put(
     '/update/{id}',
     function (Request $request, Response $response, array $args)
     {
-        $id = $request->getAttribute('id');
+        $id = getValue($request->getAttribute('id'));
         $data = $request->getParsedBody();
-        $name = $data["name"];
-        $email = $data["email"];
-        $phone = $data["phone"];
+        $name = getValue($data["name"]);
+        $email = getValue($data["email"]);
+        $phone = getValue($data["phone"]);
 
         $sql = "UPDATE customers SET
                 name = :name,
